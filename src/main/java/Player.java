@@ -143,7 +143,8 @@ public class Player {
                 selectedPlayer = players.get(selectedPlayerIndex);
                 break;
             case NOMINATE_CHANCELLOR:
-                System.out.println("Mr./Ms. president, select the index of the player you want to nominate as chancellor candidate.");
+                System.out.println("Current candidate: "+ this.getName());
+                System.out.println("Mr./Ms. presidential candidate, select the index of the player you want to nominate as your chancellor candidate.");
                 selectedPlayerIndex = selectValidPlayerIndex(players);
                 selectedPlayer = players.get(selectedPlayerIndex);
                 break;

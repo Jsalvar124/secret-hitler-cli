@@ -76,11 +76,12 @@ public class Game {
 
     // The result of the election is true, if there is a majority and false otherwise.
     public boolean runElecion(Player president, Player chancellor){
-        System.out.println("###  Running Election  ###");
+        System.out.println("###  RUNNING ELECTION  ###");
         System.out.printf("Failed Election Count: %d\n", gameBoard.getFailedElectionCount());
-        if(president == currentPresident || chancellor == currentChancellor){
-            return false;
-        }
+//        if(president == currentPresident || chancellor == currentChancellor){
+//            System.out.println("Chancellor cannot be reelected for consecutive terms, the election is nullified.");
+//            return false;
+//        }
         int yesVotes = 0;
         int noVotes = 0;
 
@@ -153,7 +154,7 @@ public class Game {
 
         // Get the current count of enacted fascist policies.
         int fascistPolicies = gameBoard.getFascistPolicies();
-
+        // Kept the repeated code to help understand the difference between boards.
         // Presidential Powers by number of players. 5-6
         if(numberOfPlayers == 5 || numberOfPlayers == 6){
             switch (fascistPolicies){
@@ -261,7 +262,6 @@ public class Game {
         }
         return false;
     }
-
     public void startGame(){
         // Run initial methods.
         assignRoles();
@@ -288,10 +288,10 @@ public class Game {
                 if(checkGameEndConditions()){
                     break;
                 }
-            } else {
-                //Election unsuccessful, get a new pair of candidates.
+            }
+                //Get a new pair of candidates.
                 // If a previous Executive order has a preselected candidate, use it.
-                if(nextPresidentialCandidate!=null && nextPresidentialCandidate!=currentPresident){
+                if(nextPresidentialCandidate!=null && !nextPresidentialCandidate.equals(currentPresident)){
                     presidentCandidate = nextPresidentialCandidate; // loose Executive order if done uncorrectly!
                 } else {
                     //Pick the next alive possible candidate.
@@ -301,13 +301,11 @@ public class Game {
                         //Verify that the candidate is not the current president and it's alive,
                         presidentCandidate = players.get(nextPresidentIndex);
 
-                    } while(!presidentCandidate.getIsAlive() || presidentCandidate == currentPresident);
-
+                    } while(!presidentCandidate.getIsAlive() ||  presidentCandidate.equals(currentPresident));
                 }
                 chancellorCandidate = presidentCandidate.presidentialExecutiveAction(players, ExecutiveAction.NOMINATE_CHANCELLOR);
-                // run NOMNINATE_CHANCELLOR action
-            }
         }
+
     }
 
     //Helper
