@@ -1,0 +1,7 @@
+public enum ExecutiveAction {
+    INVESTIGATE_PLAYER,
+    KILL_PLAYER,
+    CHOOSE_NEXT_CANDIDATE,
+    NOMINATE_CHANCELLOR
+
+}
