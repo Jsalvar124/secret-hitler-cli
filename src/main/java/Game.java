@@ -275,6 +275,7 @@ public class Game {
 
         // Start running Elections
         while(!isGameOver){
+            // TODO DISPLAY CURRENT STATE OF THE GAMEBOARD, NUMBER OF FASCIST AND LIBERAL POLICIES
             boolean electionResult = runElecion(presidentCandidate, chancellorCandidate);
             if(checkGameEndConditions()){
                 break;

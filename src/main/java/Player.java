@@ -82,7 +82,7 @@ public class Player {
 
     public void vote(Player president, Player chancellor){
 //        Scanner scanner = new Scanner(System.in);
-        System.out.println("Please, vote if you want to elect "+president.getName()+ " as president and "+chancellor.getName()+" as chancellor. (y/n)");
+        System.out.printf("%s, please vote if you want to elect %s as president and %s as chancellor. (y/n)\n", this.getName(), president.getName(), chancellor.getName());
         String playerVote = scanner.nextLine();
         if(playerVote.equalsIgnoreCase("y")){
             setVote(true);
@@ -125,24 +125,32 @@ public class Player {
 
         switch (action){
             case INVESTIGATE_PLAYER:
+                System.out.println("INVESTIGATE A PLAYER");
+                System.out.println("Current candidate: "+ this.getName());
                 System.out.println("Mr./Ms. president, select the index of the player you want to investigate");
                 selectedPlayerIndex = selectValidPlayerIndex(players);
                 selectedPlayer = players.get(selectedPlayerIndex);
                 System.out.printf("The role of %s is: %s\n",selectedPlayer.getName(), selectedPlayer.getRole().name());
                 break;
             case KILL_PLAYER:
+                System.out.println("EXECUTE A PLAYER");
+                System.out.println("Current candidate: "+ this.getName());
                 System.out.println("Mr./Ms. president, select the index of the player you want get rid of");
                 selectedPlayerIndex = selectValidPlayerIndex(players);
                 selectedPlayer = players.get(selectedPlayerIndex);
                 selectedPlayer.setIsAlive(false);
-                System.out.printf("%s is now dead!", selectedPlayer.getName());
+                System.out.printf("%s is now dead!\n", selectedPlayer.getName());
                 break;
             case CHOOSE_NEXT_CANDIDATE:
+                System.out.println("CHOOSE NEXT PRESIDENTIAL CANDIDATE");
+                System.out.println("Current candidate: "+ this.getName());
                 System.out.println("Mr./Ms. president, select the index of the player you want to choose as the next presidential candidate.");
                 selectedPlayerIndex = selectValidPlayerIndex(players);
                 selectedPlayer = players.get(selectedPlayerIndex);
                 break;
             case NOMINATE_CHANCELLOR:
+                // TODO: KEEP TRACK OF THE NUMBER OF POLICIES IN THE DECK, RESHUFFLE WHEN THE NUMBER IS LESS THAN 3.
+                // TODO: FIX VALUE STORED IN CACHE AFTER SCANN; USE SCANNER.NEXT().
                 System.out.println("Current candidate: "+ this.getName());
                 System.out.println("Mr./Ms. presidential candidate, select the index of the player you want to nominate as your chancellor candidate.");
                 selectedPlayerIndex = selectValidPlayerIndex(players);
@@ -167,11 +175,15 @@ public class Player {
         }
         if (scanner.hasNextInt()){
             int index = scanner.nextInt() - 1;
+            // avoid selecting its own index.
             if(index<0 || index >= players.size()){
                 System.out.println("Invalid selection. Please try again.");
                 return selectValidPlayerIndex(players);
             } else if(!players.get(index).getIsAlive()){
                 System.out.println("Invalid selection. Selected player is dead, try again.");
+                return selectValidPlayerIndex(players);
+            } else if(players.indexOf(this)==index){
+                System.out.println("Invalid selection, you can not select yourself.");
                 return selectValidPlayerIndex(players);
             } else {
                 return index;

@@ -10,6 +10,7 @@ public class Main {
         int numberOfPlayers = scanner.nextInt();
         Game game = new Game(numberOfPlayers);
         game.startGame();
+
         System.out.println("###  GAME OVER!  ###");
     }
 }
