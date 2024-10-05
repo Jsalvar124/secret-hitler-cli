@@ -23,6 +23,8 @@ public class GameBoard {
     public void enactLiberalPolicy(){
         if(liberalPolicies<MAX_LIBEARL_POLICIES){
             liberalPolicies++;
+            //reset election failed election tracker.
+            failedElectionCount = 0;
             System.out.println("A Liberal policy has been enacted!");
         } else {
             System.out.println("Damn! Maximum number of Liberal policies has already been enacted.");
@@ -32,6 +34,8 @@ public class GameBoard {
     public void enactFascistPolicy(){
         if(fascistPolicies<MAX_FASCIST_POLICIES){
             fascistPolicies++;
+            //reset election failed election tracker.
+            failedElectionCount = 0;
             System.out.println("A Fascist policy has been enacted!");
         } else {
             System.out.println("Damn! Maximum number of Fascist policies has already been enacted.");
@@ -70,12 +74,14 @@ public class GameBoard {
     public void increaseFailedElectionCount() {
         failedElectionCount++;
         if(failedElectionCount == MAX_FAILED_ELECTION){
-            System.out.println("There has been 3 failed elections, a policy must be enacted!");
-            int random = (int) Math.random() * 2; // either 0 or 1.
-            if(random == 1){
+            System.out.println("There has been 3 failed elections in a row!, to avoid chaos a policy must be enacted!");
+            Policy topPolicy = policies.get(0);
+            if(topPolicy == Policy.FASCIST){
+                policies.remove(0); //remove first policy
                 System.out.println("Fascist policy enacted.");
                 enactFascistPolicy();
             } else {
+                policies.remove(0); //remove first policy
                 System.out.println("Liberal policy enacted.");
                 enactLiberalPolicy();
             }

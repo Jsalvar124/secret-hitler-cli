@@ -175,6 +175,7 @@ public class Player {
         }
         if (scanner.hasNextInt()){
             int index = scanner.nextInt() - 1;
+            scanner.nextLine(); // Consume the newline after the int input
             // avoid selecting its own index.
             if(index<0 || index >= players.size()){
                 System.out.println("Invalid selection. Please try again.");

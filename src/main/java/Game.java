@@ -102,13 +102,19 @@ public class Game {
             System.out.printf("The Candidates are majority, congratulations! %s is now president and %s is chancellor.\n", president.getName(), chancellor.getName());
             president.setPresident(true);
             chancellor.setChancellor(true);
-            // Asign current president and chancellor index to avoid reelection on the next round.
-            currentPresident = president;
-            currentChancellor = chancellor;
+            // Reset president and chancellor state to false
+            if(currentChancellor!=null && currentPresident!=null){
+                currentPresident.setPresident(false);
+                currentChancellor.setChancellor(false);
+            }
+
         } else {
             System.out.println("The election did not reach a majority! It will be repeated with a new pair of candidates.");
             gameBoard.increaseFailedElectionCount();
         }
+        // Asign currentPresident and Chancelor even if election was not valid, this to avoid the same candidate.
+        currentPresident = president;
+        currentChancellor = chancellor;
 
         return yesVotes > noVotes? true : false;
     }
@@ -142,6 +148,7 @@ public class Game {
         } else {
             gameBoard.enactFascistPolicy();
         }
+        System.out.printf("Policies Count: LIBERAL: %d - FASCIST: %d\n", gameBoard.getLiberalPolicies(), gameBoard.getFascistPolicies());
         return selectedPolicy;
     }
 
@@ -275,7 +282,6 @@ public class Game {
 
         // Start running Elections
         while(!isGameOver){
-            // TODO DISPLAY CURRENT STATE OF THE GAMEBOARD, NUMBER OF FASCIST AND LIBERAL POLICIES
             boolean electionResult = runElecion(presidentCandidate, chancellorCandidate);
             if(checkGameEndConditions()){
                 break;
@@ -325,7 +331,10 @@ public class Game {
         return false;
     }
     private boolean isHitlerChancelorAfterThreeFascistPolicies(){
-        return currentChancellor.getRole() == Role.HITLER && gameBoard.getFascistPolicies() >= 3;
+        if(currentChancellor!=null){
+            return currentChancellor.getRole() == Role.HITLER && gameBoard.getFascistPolicies() >= 3;
+        }
+        return false;
     }
 
     //Getters and Setters
