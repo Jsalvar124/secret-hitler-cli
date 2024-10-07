@@ -1,3 +1,4 @@
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -58,13 +59,15 @@ public class GameBoard {
     public void initializePoliciesDeck(){
         // Add policies, and shuffle.
         for (int i = 0; i < 17-(liberalPolicies+fascistPolicies); i++) {
-            if(i<(6-liberalPolicies)){
+            if(i<(MAX_LIBEARL_POLICIES-liberalPolicies)){
                 policies.add(Policy.LIBERAL);
             } else {
                 policies.add(Policy.FASCIST);
             }
         }
+        System.out.println("Policies Deck Reshuffled!");
         Collections.shuffle(policies);
+        System.out.println(policies);
     }
 
     public List<Policy> getPolicies() {

@@ -262,10 +262,6 @@ public class Game {
             System.out.println("### HITLER WAS KILLED: LIBERALS WIN!  ###");
             isGameOver = true;
             return true;
-        } else if (isHitlerChancelorAfterThreeFascistPolicies()) {
-            System.out.println("### HITLER WAS ELECTED CHANCELLOR AFTER THREE FASCIST POLICIES: HITLER AND THE FASCISTS WIN!  ###");
-            isGameOver = true;
-            return true;
         }
         return false;
     }
@@ -273,6 +269,8 @@ public class Game {
         // Run initial methods.
         assignRoles();
         initializeGame();
+        // Debbug
+        System.out.println(players);
 
         int presidentIndex = 0;
         int nextPresidentIndex;
@@ -283,14 +281,30 @@ public class Game {
         // Start running Elections
         while(!isGameOver){
             boolean electionResult = runElecion(presidentCandidate, chancellorCandidate);
+
+            if(isHitlerChancelorAfterThreeFascistPolicies()){
+                System.out.println("### HITLER WAS ELECTED CHANCELLOR AFTER THREE FASCIST POLICIES: HITLER AND THE FASCISTS WIN!  ###");
+                isGameOver = true;
+                break;
+            }
             if(checkGameEndConditions()){
                 break;
+            }
+            //DEBBUG
+            System.out.println(players);
+            // Check if there are at least 3 cards on the policies deck.
+            if(gameBoard.getPolicies().size()<3){
+                // If so, reshuffle deck with all discarded, but not the enacted policies.
+                gameBoard.initializePoliciesDeck();
             }
             if(electionResult){
                 Policy selectedPolicy = runLegislativeSession(currentPresident,currentChancellor);
                 if(checkGameEndConditions()){
                     break;
                 }
+                //DEBBUG
+                System.out.println(gameBoard.getPolicies());
+                System.out.println("REMAINING POLICIES: "+gameBoard.getPolicies().size());
                 runExecutiveAction(selectedPolicy);
                 if(checkGameEndConditions()){
                     break;

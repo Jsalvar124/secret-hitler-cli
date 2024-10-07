@@ -126,7 +126,7 @@ public class Player {
         switch (action){
             case INVESTIGATE_PLAYER:
                 System.out.println("INVESTIGATE A PLAYER");
-                System.out.println("Current candidate: "+ this.getName());
+                System.out.println("Current president: "+ this.getName());
                 System.out.println("Mr./Ms. president, select the index of the player you want to investigate");
                 selectedPlayerIndex = selectValidPlayerIndex(players);
                 selectedPlayer = players.get(selectedPlayerIndex);
@@ -134,7 +134,7 @@ public class Player {
                 break;
             case KILL_PLAYER:
                 System.out.println("EXECUTE A PLAYER");
-                System.out.println("Current candidate: "+ this.getName());
+                System.out.println("Current president: "+ this.getName());
                 System.out.println("Mr./Ms. president, select the index of the player you want get rid of");
                 selectedPlayerIndex = selectValidPlayerIndex(players);
                 selectedPlayer = players.get(selectedPlayerIndex);
@@ -143,18 +143,25 @@ public class Player {
                 break;
             case CHOOSE_NEXT_CANDIDATE:
                 System.out.println("CHOOSE NEXT PRESIDENTIAL CANDIDATE");
-                System.out.println("Current candidate: "+ this.getName());
+                System.out.println("Current president: "+ this.getName());
                 System.out.println("Mr./Ms. president, select the index of the player you want to choose as the next presidential candidate.");
                 selectedPlayerIndex = selectValidPlayerIndex(players);
                 selectedPlayer = players.get(selectedPlayerIndex);
                 break;
             case NOMINATE_CHANCELLOR:
                 // TODO: KEEP TRACK OF THE NUMBER OF POLICIES IN THE DECK, RESHUFFLE WHEN THE NUMBER IS LESS THAN 3.
-                // TODO: FIX VALUE STORED IN CACHE AFTER SCANN; USE SCANNER.NEXT().
                 System.out.println("Current candidate: "+ this.getName());
+                // Next nominate cannot be current chancellor.
                 System.out.println("Mr./Ms. presidential candidate, select the index of the player you want to nominate as your chancellor candidate.");
-                selectedPlayerIndex = selectValidPlayerIndex(players);
-                selectedPlayer = players.get(selectedPlayerIndex);
+                boolean wasLastChancellor;
+                do {
+                    selectedPlayerIndex = selectValidPlayerIndex(players);
+                    selectedPlayer = players.get(selectedPlayerIndex);
+                     wasLastChancellor = selectedPlayer.getChancellor();
+                     if(wasLastChancellor){
+                         System.out.println("Chancellors can not be nominated in consecutive elections. Try someone else.");
+                     }
+                } while(wasLastChancellor);
                 break;
             default:
                 System.out.println("Invalid Executive Action");
