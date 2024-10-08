@@ -36,17 +36,18 @@ To run the project locally:
 
 1. **Clone the repository:**
    
-bash
+```bash
    git clone https://github.com/Jsalvar124/secret-hitler-cli.git
+```
 2. **Compile and run the project:**
    You can use any IDE that supports Java, such as IntelliJ IDEA or Eclipse.
 
    Alternatively, you can compile and run it from the command line:
-bash
+```bash
    cd secret-hitler-cli
    javac Main.java
    java Main
-
+```
 ## Game Structure
 
 - **Player Class**: Represents a player in the game, including their role (Liberal, Fascist, or Hitler), voting status, and whether they are alive.
