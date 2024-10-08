@@ -69,6 +69,7 @@ public class Game {
             String name = scanner.nextLine();
             Role role = rolesList.get(i);
             Player player = new Player(name,role);
+            System.out.println(name + " you are "+ role);
             //Add them to the players attribute list
             players.add(player);
         }
