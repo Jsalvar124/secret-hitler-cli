@@ -78,10 +78,7 @@ public class Game {
     public boolean runElecion(Player president, Player chancellor){
         System.out.println("###  RUNNING ELECTION  ###");
         System.out.printf("Failed Election Count: %d\n", gameBoard.getFailedElectionCount());
-//        if(president == currentPresident || chancellor == currentChancellor){
-//            System.out.println("Chancellor cannot be reelected for consecutive terms, the election is nullified.");
-//            return false;
-//        }
+
         int yesVotes = 0;
         int noVotes = 0;
 
@@ -102,19 +99,29 @@ public class Game {
             System.out.printf("The Candidates are majority, congratulations! %s is now president and %s is chancellor.\n", president.getName(), chancellor.getName());
             president.setPresident(true);
             chancellor.setChancellor(true);
-            // Reset president and chancellor state to false
-            if(currentChancellor!=null && currentPresident!=null){
-                currentPresident.setPresident(false);
-                currentChancellor.setChancellor(false);
-            }
+
+            // Asign currentPresident and Chancelor even if election was not valid, this to avoid the same candidate.
+            currentPresident = president;
+            currentChancellor = chancellor;
 
         } else {
             System.out.println("The election did not reach a majority! It will be repeated with a new pair of candidates.");
             gameBoard.increaseFailedElectionCount();
+
+            president.setPresident(true);
+            chancellor.setChancellor(true);
+            // Set flag to true to avoid re nomination.
         }
-        // Asign currentPresident and Chancelor even if election was not valid, this to avoid the same candidate.
-        currentPresident = president;
-        currentChancellor = chancellor;
+
+        // Reset the non-candidates state to false, this flag is used to avoid re nomination.
+        for (Player player: players) {
+            if(!player.equals(chancellor)){
+                player.setChancellor(false);
+            }
+            if(!player.equals(president)){
+                player.setPresident(false);
+            }
+        }
 
         return yesVotes > noVotes? true : false;
     }
@@ -153,11 +160,11 @@ public class Game {
     }
 
     public void runExecutiveAction(Policy latestPolicyEnacted){
-        System.out.println("###  EXECUTIVE ACTION  ###");
         // Only Fascist Policies get Executive Actions
         if(latestPolicyEnacted == Policy.LIBERAL){
             return;
         }
+        System.out.println("###  EXECUTIVE ACTION  ###");
 
         // Get the current count of enacted fascist policies.
         int fascistPolicies = gameBoard.getFascistPolicies();
@@ -292,11 +299,6 @@ public class Game {
             }
             //DEBBUG
             System.out.println(players);
-            // Check if there are at least 3 cards on the policies deck.
-            if(gameBoard.getPolicies().size()<3){
-                // If so, reshuffle deck with all discarded, but not the enacted policies.
-                gameBoard.initializePoliciesDeck();
-            }
             if(electionResult){
                 Policy selectedPolicy = runLegislativeSession(currentPresident,currentChancellor);
                 if(checkGameEndConditions()){
@@ -305,6 +307,11 @@ public class Game {
                 //DEBBUG
                 System.out.println(gameBoard.getPolicies());
                 System.out.println("REMAINING POLICIES: "+gameBoard.getPolicies().size());
+                // Check if there are at least 3 cards on the policies deck.
+                if(gameBoard.getPolicies().size()<3){
+                    // If so, reshuffle deck with all discarded, but not the enacted policies.
+                    gameBoard.initializePoliciesDeck();
+                }
                 runExecutiveAction(selectedPolicy);
                 if(checkGameEndConditions()){
                     break;
@@ -322,7 +329,7 @@ public class Game {
                         //Verify that the candidate is not the current president and it's alive,
                         presidentCandidate = players.get(nextPresidentIndex);
 
-                    } while(!presidentCandidate.getIsAlive() ||  presidentCandidate.equals(currentPresident));
+                    } while(!presidentCandidate.getIsAlive() ||  presidentCandidate.getPresident());
                 }
                 chancellorCandidate = presidentCandidate.presidentialExecutiveAction(players, ExecutiveAction.NOMINATE_CHANCELLOR);
         }

@@ -149,7 +149,6 @@ public class Player {
                 selectedPlayer = players.get(selectedPlayerIndex);
                 break;
             case NOMINATE_CHANCELLOR:
-                // TODO: KEEP TRACK OF THE NUMBER OF POLICIES IN THE DECK, RESHUFFLE WHEN THE NUMBER IS LESS THAN 3.
                 System.out.println("Current candidate: "+ this.getName());
                 // Next nominate cannot be current chancellor.
                 System.out.println("Mr./Ms. presidential candidate, select the index of the player you want to nominate as your chancellor candidate.");

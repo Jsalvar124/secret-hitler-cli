@@ -6,8 +6,20 @@ public class Main {
         System.out.println("###  SECRET HITLER!  ###");
 
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter the number of players: ");
-        int numberOfPlayers = scanner.nextInt();
+        int numberOfPlayers = 0;
+        do {
+            System.out.println("Enter the number of players: ");
+            if(scanner.hasNextInt()){
+                numberOfPlayers = scanner.nextInt();
+                if(numberOfPlayers<5 || numberOfPlayers>10)
+                    System.out.println("Invalid input, please enter a number between 5 and 10");
+                scanner.nextLine();
+            } else {
+                System.out.println("Invalid input, please enter a number.");
+                scanner.nextLine();
+            }
+        } while(numberOfPlayers<5 || numberOfPlayers>10);
+
         Game game = new Game(numberOfPlayers);
         game.startGame();
 

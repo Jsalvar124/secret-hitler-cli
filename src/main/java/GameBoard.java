@@ -58,6 +58,7 @@ public class GameBoard {
 
     public void initializePoliciesDeck(){
         // Add policies, and shuffle.
+        policies.clear();
         for (int i = 0; i < 17-(liberalPolicies+fascistPolicies); i++) {
             if(i<(MAX_LIBEARL_POLICIES-liberalPolicies)){
                 policies.add(Policy.LIBERAL);
